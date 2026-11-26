@@ -1,9 +1,10 @@
 // NAME: 확장 업데이트
 // AUTHOR: 지훈
 // DESCRIPTION: GitHub 저장소에 확장 새 버전이 올라오면 알려주고, 버튼 한 번으로 PowerShell 업데이트를 실행합니다.
-// VERSION: 1.1.0
+// VERSION: 1.1.1
 //
-// - Spotify를 켤 때와 6시간마다 GitHub 저장소의 manifest.json을 확인합니다.
+// - Spotify를 켤 때, 그 뒤 1분마다, Spotify 창으로 돌아올 때 GitHub 저장소의 manifest.json을 확인합니다.
+//   (바뀌지 않았으면 GitHub가 304로 답해서 확인 횟수 제한에 걸리지 않음)
 // - 새 버전이 있으면: 안내 창(새 버전마다 한 번), 프로필 아이콘의 파란 점, 프로필 메뉴 "내 업데이트" 칸에 목록.
 // - [업데이트]를 누르면 브라우저가 열리고 jihoon-updater:// 로 PowerShell 업데이트가 실행됩니다.
 //   (처음 한 번 installer/install.ps1 로 설치해야 합니다)
@@ -25,7 +26,7 @@
     const API_URL = `https://api.github.com/repos/${OWNER}/${REPO}/contents/manifest.json?ref=${BRANCH}`;
     const RAW_URL = `https://raw.githubusercontent.com/${OWNER}/${REPO}/${BRANCH}/manifest.json`;
     const UPDATE_PAGE = `https://${OWNER.toLowerCase()}.github.io/${REPO}/`;
-    const CHECK_MS = 6 * 60 * 60 * 1000;
+    const CHECK_MS = 60 * 1000;
     const SEEN_KEY = "extUpdater:seen";
     const LOG = "[확장 업데이트]";
 
@@ -78,13 +79,20 @@
         }
     }
 
+    // 바뀐 게 없으면 GitHub API가 304로 답함 (ETag 조건부 요청은 시간당 60회 제한에 포함되지 않음) → 전에 받은 것 사용
+    let etag = null;
+    let lastManifest = null;
     async function fetchManifest() {
         try {
-            const res = await fetch(`${API_URL}&t=${Date.now()}`, {
-                cache: "no-store",
-                headers: { Accept: "application/vnd.github.raw+json" },
-            });
-            if (res.ok) return await res.json();
+            const headers = { Accept: "application/vnd.github.raw+json" };
+            if (etag && lastManifest) headers["If-None-Match"] = etag;
+            const res = await fetch(API_URL, { cache: "no-store", headers });
+            if (res.status === 304 && lastManifest) return lastManifest;
+            if (res.ok) {
+                etag = res.headers.get("ETag");
+                lastManifest = await res.json();
+                return lastManifest;
+            }
         } catch (e) { /* 아래 raw로 */ }
         const res = await fetch(`${RAW_URL}?t=${Date.now()}`, { cache: "no-store" });
         if (!res.ok) throw new Error(`manifest ${res.status}`);
@@ -115,6 +123,7 @@
             } catch (e) {
                 console.warn(LOG, "확인 실패:", e);
             } finally {
+                lastCheck = Date.now(); // 실패해도 1분 뒤에 다시
                 checking = null;
             }
         })();
@@ -323,7 +332,11 @@ html.ext-upd-has [data-testid="user-widget-link"]::after {
 
     // ---------- 시작 ----------
     setTimeout(check, 4000);
-    setInterval(() => { if (Date.now() - lastCheck >= CHECK_MS) check(); }, 10 * 60 * 1000);
+    setInterval(() => { if (Date.now() - lastCheck >= CHECK_MS) check(); }, 15 * 1000);
+    // Spotify 창으로 돌아오면 바로 확인 (15초 안에 확인했으면 건너뜀)
+    const onBack = () => { if (!document.hidden && Date.now() - lastCheck >= 15 * 1000) check(); };
+    window.addEventListener("focus", onBack);
+    document.addEventListener("visibilitychange", onBack);
 
     // 개발자 도구용: extUpdater.check(), extUpdater.show()
     window.extUpdater = {

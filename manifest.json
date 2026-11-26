@@ -1,12 +1,12 @@
 {
-  "updated": "2026-11-26T04:44:46Z",
+  "updated": "2026-11-26T04:57:31Z",
   "extensions": [
     {
       "file": "extUpdater.js",
       "name": "확장 업데이트",
-      "version": "1.1.0",
-      "notes": "PC 프로그램(LocalCast 보조 프로그램)도 업데이트 목록에 표시",
-      "sha256": "F6B8519F131067BFC5E965AA61B79B4DEEFCCFFF8CF7547138D127D9037802F7"
+      "version": "1.1.1",
+      "notes": "켜져 있어도 새 버전을 1분 안에 알려줌 (Spotify 창으로 돌아오면 바로 확인)",
+      "sha256": "30B92EBCEE5C06F1D63C1495E31075E02899CF126DBCE431F73B2566CAC00465"
     },
     {
       "file": "ivLyricsDeviceConnect.js",

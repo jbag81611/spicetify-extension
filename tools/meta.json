@@ -1,7 +1,7 @@
 {
   "extUpdater.js": {
     "name": "확장 업데이트",
-    "notes": "PC 프로그램(LocalCast 보조 프로그램)도 업데이트 목록에 표시"
+    "notes": "켜져 있어도 새 버전을 1분 안에 알려줌 (Spotify 창으로 돌아오면 바로 확인)"
   },
   "ivLyricsDeviceConnect.js": {
     "name": "기기 연결",
