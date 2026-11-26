@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-26T04:41:50Z",
+  "updated": "2026-11-26T04:44:46Z",
   "extensions": [
     {
       "file": "extUpdater.js",
@@ -46,9 +46,9 @@
     {
       "file": "localcast.js",
       "name": "LocalCast",
-      "version": "52.6",
-      "notes": "로컬파일을 AirPlay로 Aura Studio 5에 자동 전송, 기기 연결 패널용 상태 제공",
-      "sha256": "1FDBFCDE5167333F7A67048D315BBF1F46974A0630FED70CA6DA66117E281CB6"
+      "version": "52.7",
+      "notes": "프로필 메뉴를 'LocalCast 설정' 하나로 합침 (상태·재생목록 고치기·음악 폴더 다시 읽기)",
+      "sha256": "179F68F80A58FDF75655F6E134C2AFBCE9C3D146E6940240BFFB04A2AFF58A16"
     }
   ],
   "packages": [
@@ -117,8 +117,8 @@
         },
         {
           "path": "localcast.js",
-          "sha256": "1FDBFCDE5167333F7A67048D315BBF1F46974A0630FED70CA6DA66117E281CB6",
-          "size": 132777
+          "sha256": "179F68F80A58FDF75655F6E134C2AFBCE9C3D146E6940240BFFB04A2AFF58A16",
+          "size": 135311
         },
         {
           "path": "localcast_helper.py",

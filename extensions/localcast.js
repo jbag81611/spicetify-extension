@@ -11,7 +11,7 @@
     await new Promise((r) => setTimeout(r, 300));
   }
 
-  const VERSION = "v52.6-airplay";
+  const VERSION = "v52.7-airplay";
   const HELPER = "http://127.0.0.1:8765";
   const STORE_KEY = "localcast:enabled";
   const TAG = "[LocalCast]";
@@ -2262,33 +2262,76 @@
     }
   } catch (e) { console.warn(TAG, "오른쪽 클릭 메뉴 추가 실패", e); }
 
-  try {
-    if (Spicetify.Menu && Spicetify.Menu.Item) {
-      new Spicetify.Menu.Item("LocalCast 켜기/끄기", enabled, (self) => {
-        setEnabled(!enabled);
-        try { self.setState(enabled); } catch (e) { /* 무시 */ }
-      }).register();
-      new Spicetify.Menu.Item("LocalCast 상태 보기", false, async () => {
-        await checkHelper();
-        let st = null;
-        try { st = await helper("/status", undefined, 3000); } catch (e) { /* 무시 */ }
-        const list = await devices();
-        const active = list.find((d) => d.active);
-        const d = Spicetify.Player.data || {};
-        const msg = [
-          `${VERSION} 기능 ${enabled ? "켜짐" : "꺼짐"} / 모드 ${mode}`,
-          `보조 프로그램 ${helperOk ? "연결됨" : "꺼짐"}`,
-          `AirPlay 스피커 ${st && st.speaker ? st.speaker : "못 찾음"} / 파일 ${st ? st.files : "?"}곡`,
-          `재생 기기 ${active ? active.name : "없음"} / 셔플 ${isShuffle(d) ? "켜짐" : "꺼짐"}`,
-        ].join(" · ");
-        notify(msg);
-        log("상태: " + msg + " · 기기 " + JSON.stringify(list));
-      }).register();
-      new Spicetify.Menu.Item("LocalCast 재생목록 로컬파일 안 보일 때", false, () => { nextPlFixStage(); }).register();
-      new Spicetify.Menu.Item("LocalCast 음악 폴더 다시 읽기", false, async () => {
+  // ───────── 프로필 메뉴 "LocalCast 설정" 창 (켜기/끄기는 상단 아이콘으로) ─────────
+  async function statusLines() {
+    await checkHelper();
+    let st = null;
+    try { st = await helper("/status", undefined, 3000); } catch (e) { /* 무시 */ }
+    const list = await devices();
+    const active = list.find((d) => d.active);
+    const d = Spicetify.Player.data || {};
+    log("상태: " + JSON.stringify({ enabled, mode, helperOk, speaker: st && st.speaker, files: st && st.files }) + " · 기기 " + JSON.stringify(list));
+    return [
+      ["버전", VERSION],
+      ["기능", `${enabled ? "켜짐" : "꺼짐"} · 모드 ${mode}`],
+      ["보조 프로그램", helperOk ? "연결됨" : "꺼짐"],
+      ["AirPlay 스피커", st && st.speaker ? st.speaker : "못 찾음"],
+      ["음악 파일", st ? `${st.files}곡` : "?"],
+      ["재생 기기", active ? active.name : "없음"],
+      ["셔플", isShuffle(d) ? "켜짐" : "꺼짐"],
+    ];
+  }
+
+  function openSettings() {
+    const mk = (tag, css, text) => { const n = document.createElement(tag); if (css) n.style.cssText = css; if (text != null) n.textContent = text; return n; };
+    const box = mk("div", "display:flex;flex-direction:column;gap:18px;font-size:14px;");
+
+    const stTitle = mk("div", "font-weight:700;font-size:15px;", "상태");
+    const stBox = mk("div", "display:grid;grid-template-columns:auto 1fr;gap:6px 16px;padding:12px 14px;border-radius:8px;background:rgba(255,255,255,.07);");
+    const fill = async () => {
+      stBox.textContent = "";
+      stBox.append(mk("div", "opacity:.7;grid-column:1/3;", "확인 중…"));
+      const rows = await statusLines().catch(() => [["상태", "확인 실패"]]);
+      stBox.textContent = "";
+      for (const [k, v] of rows) stBox.append(mk("div", "opacity:.7;", k), mk("div", "font-weight:600;", v));
+    };
+
+    const action = (title, desc, label, run) => {
+      const row = mk("div", "display:flex;align-items:center;gap:14px;padding:12px 14px;border-radius:8px;background:rgba(255,255,255,.07);");
+      const txt = mk("div", "flex:1;min-width:0;");
+      txt.append(mk("div", "font-weight:600;", title), mk("div", "opacity:.7;font-size:12px;margin-top:2px;", desc));
+      const b = mk("button", "flex:none;border:0;border-radius:999px;padding:8px 18px;font-weight:700;font-size:13px;cursor:pointer;background:#1ed760;color:#000;", label);
+      b.type = "button";
+      b.addEventListener("click", async () => {
+        b.disabled = true; b.style.opacity = ".5";
+        try { await run(); } finally { b.disabled = false; b.style.opacity = ""; fill(); }
+      });
+      row.append(txt, b);
+      return row;
+    };
+
+    const toolsTitle = mk("div", "font-weight:700;font-size:15px;", "도구");
+    const tools = mk("div", "display:flex;flex-direction:column;gap:8px;");
+    tools.append(
+      action("재생목록 로컬파일 안 보일 때", "누를 때마다 다음 방법으로 고쳐 봐요", "고치기", async () => { nextPlFixStage(); }),
+      action("음악 폴더 다시 읽기", "새로 넣은 곡이 안 잡힐 때", "다시 읽기", async () => {
         try { const r = await helper("/rescan", {}, 120000); notify(`음악 폴더 다시 읽음: ${r.files}곡`); }
         catch (e) { notify("보조 프로그램이 꺼져 있어요", true); }
-      }).register();
+      }),
+    );
+
+    const refresh = mk("button", "align-self:flex-start;border:1px solid rgba(255,255,255,.3);border-radius:999px;padding:6px 14px;font-size:12px;cursor:pointer;background:transparent;color:inherit;", "상태 새로고침");
+    refresh.type = "button";
+    refresh.addEventListener("click", fill);
+
+    box.append(stTitle, stBox, refresh, toolsTitle, tools, mk("div", "opacity:.6;font-size:12px;", "LocalCast 켜기/끄기는 상단의 LocalCast 아이콘으로 해요."));
+    Spicetify.PopupModal.display({ title: "LocalCast 설정", content: box, isLarge: true });
+    fill();
+  }
+
+  try {
+    if (Spicetify.Menu && Spicetify.Menu.Item) {
+      new Spicetify.Menu.Item("LocalCast 설정", false, () => { openSettings(); }).register();
     }
   } catch (e) { console.warn(TAG, "메뉴 추가 실패", e); }
 

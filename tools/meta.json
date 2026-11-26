@@ -25,7 +25,7 @@
   },
   "localcast.js": {
     "name": "LocalCast",
-    "notes": "로컬파일을 AirPlay로 Aura Studio 5에 자동 전송, 기기 연결 패널용 상태 제공"
+    "notes": "프로필 메뉴를 'LocalCast 설정' 하나로 합침 (상태·재생목록 고치기·음악 폴더 다시 읽기)"
   },
   "packages": {
     "localcast": {
