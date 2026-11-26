@@ -1,0 +1,2 @@
+# 패키지 파일은 바이트 그대로 (SHA256 확인 + .bat 은 CRLF 필요)
+packages/** -text

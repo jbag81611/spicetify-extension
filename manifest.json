@@ -1,12 +1,12 @@
 {
-  "updated": "2026-11-26T04:18:52Z",
+  "updated": "2026-11-26T04:41:50Z",
   "extensions": [
     {
       "file": "extUpdater.js",
       "name": "확장 업데이트",
-      "version": "1.0.0",
-      "notes": "새 버전 알림(안내 창·파란 점·내 업데이트)과 PowerShell 자동 업데이트",
-      "sha256": "E04C89139A2D8E63A733C2535495093B835C3C33260F0FA34C46302C0600A7AB"
+      "version": "1.1.0",
+      "notes": "PC 프로그램(LocalCast 보조 프로그램)도 업데이트 목록에 표시",
+      "sha256": "F6B8519F131067BFC5E965AA61B79B4DEEFCCFFF8CF7547138D127D9037802F7"
     },
     {
       "file": "ivLyricsDeviceConnect.js",
@@ -49,6 +49,88 @@
       "version": "52.6",
       "notes": "로컬파일을 AirPlay로 Aura Studio 5에 자동 전송, 기기 연결 패널용 상태 제공",
       "sha256": "1FDBFCDE5167333F7A67048D315BBF1F46974A0630FED70CA6DA66117E281CB6"
+    }
+  ],
+  "packages": [
+    {
+      "id": "localcast",
+      "file": "localcast.pkg",
+      "name": "LocalCast 보조 프로그램",
+      "version": "52.6",
+      "notes": "C:\\LocalCast 의 AirPlay 전송·보조 프로그램 (localcast.js와 같이 업데이트)",
+      "install_dir": "LocalCast",
+      "files": [
+        {
+          "path": "1_install.bat",
+          "sha256": "7340C364C55F6AB52C83B5D0D4AFACED4EDDDA4D45FB8C8FD970600FBFDB55B6",
+          "size": 2124
+        },
+        {
+          "path": "2_restart_helper.bat",
+          "sha256": "8DC9A3E328BBD486DA74201EE3AF3480D3126B6F9E265EBD303988AF1FAA4CD2",
+          "size": 514
+        },
+        {
+          "path": "3_debug_console.bat",
+          "sha256": "6BBA77DA0AD5DA3AB54F63535BBBC462E012FFD2B72A72DD17BA4059C8269171",
+          "size": 704
+        },
+        {
+          "path": "4_autostart_off.bat",
+          "sha256": "FD41E67E1ABA0BA21DA2C78DF227F56CC3EB2C3E29D52259D50291D795B8750F",
+          "size": 435
+        },
+        {
+          "path": "5_airplay_test.bat",
+          "sha256": "D901DC1200633BBA767E170049599B067DF59CFF7696D43E5C4BB574F2351A29",
+          "size": 854
+        },
+        {
+          "path": "README.txt",
+          "sha256": "40A97AB847A3D47E1B07C868CDA4DC6683FC30AEB656317361EED2C09B15D668",
+          "size": 7813
+        },
+        {
+          "path": "autostart.py",
+          "sha256": "FBBE22CFF887DC5A083855C9E6D922CDFDD66FAF141C3B0272FD143DB4B6576B",
+          "size": 4175
+        },
+        {
+          "path": "bin/firewall_allow.bat",
+          "sha256": "5890C9103B3076FB26D8BA3B2B0963E47E0606D6C39942D82BDF17544E362205",
+          "size": 761
+        },
+        {
+          "path": "bin/firewall_fix.ps1",
+          "sha256": "46CCC19A42111953B97519CD99028462CD625171995116C7D37DB94F001A9E19",
+          "size": 2540
+        },
+        {
+          "path": "bin/lc_airplay.exe",
+          "sha256": "7553CF44C2A48EF8954D50C633DA8EBF6CC4118C04FA05CBD1B763F37AF7F871",
+          "size": 14173356
+        },
+        {
+          "path": "config.json",
+          "sha256": "1BDBD05AB63E8250CCD085D62727E7839E08E9CF6686A44D8D81DCC2A15C99F6",
+          "size": 396
+        },
+        {
+          "path": "localcast.js",
+          "sha256": "1FDBFCDE5167333F7A67048D315BBF1F46974A0630FED70CA6DA66117E281CB6",
+          "size": 132777
+        },
+        {
+          "path": "localcast_helper.py",
+          "sha256": "EDD2ED55D6ACB0916F6C3D72D9BDCEBA283DECCF33D689A605CFFE74D4F1E8E9",
+          "size": 57592
+        },
+        {
+          "path": "requirements.txt",
+          "sha256": "67102B2AD24BA91FCCFF38346B4384571593F77BC174EAE434019ED88F3AD15C",
+          "size": 39
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,16 @@
+{
+  "speaker_name": "Aura Studio 5",
+  "music_folders": [
+    "%USERPROFILE%\\OneDrive\\스포티파이 로컬파일",
+    "%USERPROFILE%\\Downloads"
+  ],
+  "pc_device_name": "",
+  "control_port": 8765,
+  "switch_lead_ms": 800,
+  "resync_threshold_s": 3.0,
+  "airplay_ip": "",
+  "airplay_port": 7000,
+  "max_speaker_volume": 50,
+  "airplay_latency_ms": 1000,
+  "speaker_ip_hint": "172.30.1.80"
+}

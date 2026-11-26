@@ -1,0 +1,5 @@
+mutagen
+pycaw
+comtypes
+psutil
+zeroconf

@@ -40,7 +40,7 @@
 <script>
   const OWNER = "jbag81611", REPO = "spicetify-extension";
   const only = new URLSearchParams(location.search).get("only") || "";
-  const safe = only.split(",").filter((f) => /^[A-Za-z0-9._-]+\.m?js$/.test(f)).join(",");
+  const safe = only.split(",").filter((f) => /^[A-Za-z0-9._-]+\.(m?js|pkg)$/.test(f)).join(",");
   const target = "jihoon-updater://update" + (safe ? "?only=" + encodeURIComponent(safe) : "");
   const cmd = `iwr -useb https://raw.githubusercontent.com/${OWNER}/${REPO}/main/installer/install.ps1 | iex`;
   document.getElementById("cmd").textContent = cmd;

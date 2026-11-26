@@ -31,3 +31,14 @@ iwr -useb https://raw.githubusercontent.com/jbag81611/spicetify-extension/main/i
 | `installer/install.ps1` | 처음 설치 |
 | `installer/updater.ps1` | 실제 업데이트 (jihoon-updater:// 로 실행) |
 | `docs/index.html` | 브라우저 → jihoon-updater:// 로 넘겨주는 페이지 (GitHub Pages) |
+
+## 패키지 (PC에 따로 깔리는 프로그램)
+
+`packages/<id>/` 폴더 = PC에 설치될 파일 그대로. 지금은 `packages/localcast/` → `C:\LocalCast` (LocalCast 보조 프로그램).
+
+- 버전: `packages/localcast/localcast_helper.py` 의 `VERSION = "vNN.N-..."` (localcast.js 와 같은 번호로 맞춤)
+- `python3 tools/build_manifest.py` 가 `manifest.json` 의 `packages` (파일별 SHA256) 를 만들고, `extensions/localcast.js` 를 `packages/localcast/localcast.js` 에도 복사함
+- 확장 업데이트(extUpdater.js)는 보조 프로그램의 `http://127.0.0.1:8765/config` version 과 비교해 "LocalCast 보조 프로그램" 업데이트를 표시
+- updater.ps1 은 보조 프로그램 끄기 → `C:\LocalCast` 전부 지우고 새로 → pip 라이브러리 → 방화벽 확인 → `autostart.py on` (다시 켜기 + 부팅 자동 실행)
+- localcast.js 를 업데이트할 때 설치된 보조 프로그램이 옛 버전이면 같이 업데이트됨
+- 새 PC 처음 설치용 bat: `python3 tools/make_localcast_setup.py LocalCast_Setup.bat`

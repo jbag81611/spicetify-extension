@@ -1,12 +1,14 @@
 // NAME: 확장 업데이트
 // AUTHOR: 지훈
 // DESCRIPTION: GitHub 저장소에 확장 새 버전이 올라오면 알려주고, 버튼 한 번으로 PowerShell 업데이트를 실행합니다.
-// VERSION: 1.0.0
+// VERSION: 1.1.0
 //
 // - Spotify를 켤 때와 6시간마다 GitHub 저장소의 manifest.json을 확인합니다.
 // - 새 버전이 있으면: 안내 창(새 버전마다 한 번), 프로필 아이콘의 파란 점, 프로필 메뉴 "내 업데이트" 칸에 목록.
 // - [업데이트]를 누르면 브라우저가 열리고 jihoon-updater:// 로 PowerShell 업데이트가 실행됩니다.
 //   (처음 한 번 installer/install.ps1 로 설치해야 합니다)
+// - manifest.packages: 확장 말고 PC에 따로 깔리는 프로그램(예: C:\LocalCast 보조 프로그램)도 같은 방식으로 업데이트.
+//   지금 버전은 그 프로그램이 켜져 있으면 http://127.0.0.1:<port>/config 의 version 으로 읽음.
 
 (function extUpdater() {
     "use strict";
@@ -58,6 +60,24 @@
         }
     }
 
+    // PC에 깔린 패키지 버전 (보조 프로그램이 꺼져 있으면 모름 → null)
+    const PKG_VERSION_URL = { localcast: "http://127.0.0.1:8765/config" };
+    async function installedPackageVersion(id) {
+        const url = PKG_VERSION_URL[id];
+        if (!url) return null;
+        try {
+            const ctl = new AbortController();
+            const t = setTimeout(() => ctl.abort(), 2500);
+            const res = await fetch(url, { cache: "no-store", signal: ctl.signal });
+            clearTimeout(t);
+            if (!res.ok) return null;
+            const m = /v?(\d+(?:\.\d+)*)/.exec(String((await res.json()).version || ""));
+            return m ? m[1] : null;
+        } catch (e) {
+            return null;
+        }
+    }
+
     async function fetchManifest() {
         try {
             const res = await fetch(`${API_URL}&t=${Date.now()}`, {
@@ -82,6 +102,11 @@
                     const cur = await installedVersion(ext.file);
                     if (cur === null) list.push({ ...ext, from: null, isNew: true });
                     else if (cmp(ext.version, cur) > 0) list.push({ ...ext, from: cur, isNew: false });
+                }
+                for (const pkg of manifest.packages || []) {
+                    if (!pkg?.file || !pkg.version) continue;
+                    const cur = await installedPackageVersion(pkg.id);
+                    if (cur !== null && cmp(pkg.version, cur) > 0) list.push({ ...pkg, from: cur, isNew: false });
                 }
                 updates = list;
                 lastCheck = Date.now();
