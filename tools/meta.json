@@ -1,0 +1,9 @@
+{
+  "extUpdater.js": { "name": "확장 업데이트", "notes": "새 버전 알림(안내 창·파란 점·내 업데이트)과 PowerShell 자동 업데이트" },
+  "ivLyricsDeviceConnect.js": { "name": "기기 연결", "notes": "ivLyrics 전체화면 기기 연결 패널, LocalCast AirPlay 표시" },
+  "ivLyricsFullscreenBridge.js": { "name": "전체화면 연동", "notes": "Fullscreen ↔ ivLyrics 전체화면 연동, 사이드바·싱크 조절" },
+  "ivLyricsFurigana.js": { "name": "후리가나 보정", "notes": "후리가나 읽기 보정 (二人→ふたり 등 고정 사전)" },
+  "ivLyricsHideCredits.js": { "name": "가사 제공자 숨기기", "notes": "가사 제공자·싱크 제작자 표시 숨기기, 프로필 메뉴 켜기/끄기" },
+  "ivLyricsLocalTranslate.js": { "name": "로컬파일 번역", "notes": "로컬파일 LRC/TXT 가사 싱크·번역, 유튜브 링크 팝업 숨기기" },
+  "localcast.js": { "name": "LocalCast", "notes": "로컬파일을 AirPlay로 Aura Studio 5에 자동 전송, 기기 연결 패널용 상태 제공" }
+}

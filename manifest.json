@@ -1,0 +1,54 @@
+{
+  "updated": "2026-11-26T04:18:52Z",
+  "extensions": [
+    {
+      "file": "extUpdater.js",
+      "name": "확장 업데이트",
+      "version": "1.0.0",
+      "notes": "새 버전 알림(안내 창·파란 점·내 업데이트)과 PowerShell 자동 업데이트",
+      "sha256": "E04C89139A2D8E63A733C2535495093B835C3C33260F0FA34C46302C0600A7AB"
+    },
+    {
+      "file": "ivLyricsDeviceConnect.js",
+      "name": "기기 연결",
+      "version": "1.0.0",
+      "notes": "ivLyrics 전체화면 기기 연결 패널, LocalCast AirPlay 표시",
+      "sha256": "DC33DF928FB5DF549D863196401F8954D4C6FFBA036336C6D18238C0EF037343"
+    },
+    {
+      "file": "ivLyricsFullscreenBridge.js",
+      "name": "전체화면 연동",
+      "version": "1.7.0",
+      "notes": "Fullscreen ↔ ivLyrics 전체화면 연동, 사이드바·싱크 조절",
+      "sha256": "2E6C29DA18371F9A610FC86223DE87EB04D1D4EB842D05F0B77C7527EA212E77"
+    },
+    {
+      "file": "ivLyricsFurigana.js",
+      "name": "후리가나 보정",
+      "version": "1.1.0",
+      "notes": "후리가나 읽기 보정 (二人→ふたり 등 고정 사전)",
+      "sha256": "46BD41F4F77D12783217D07DBC3DBB65DB2FDABB34B9DC5526886B2A0D4E0D59"
+    },
+    {
+      "file": "ivLyricsHideCredits.js",
+      "name": "가사 제공자 숨기기",
+      "version": "1.1.1",
+      "notes": "가사 제공자·싱크 제작자 표시 숨기기, 프로필 메뉴 켜기/끄기",
+      "sha256": "F2D2EA007531B30CB014D8A281E36064DD53C846BC7ED9AF890AB980747D8DCB"
+    },
+    {
+      "file": "ivLyricsLocalTranslate.js",
+      "name": "로컬파일 번역",
+      "version": "1.3.0",
+      "notes": "로컬파일 LRC/TXT 가사 싱크·번역, 유튜브 링크 팝업 숨기기",
+      "sha256": "9E0EA115C166D7EF2AE90B753F64DEE06CEC95273478F277AA6E56D651D30041"
+    },
+    {
+      "file": "localcast.js",
+      "name": "LocalCast",
+      "version": "52.6",
+      "notes": "로컬파일을 AirPlay로 Aura Studio 5에 자동 전송, 기기 연결 패널용 상태 제공",
+      "sha256": "1FDBFCDE5167333F7A67048D315BBF1F46974A0630FED70CA6DA66117E281CB6"
+    }
+  ]
+}
